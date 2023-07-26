@@ -43,9 +43,9 @@ interface UseUserReturn extends UsePaginationReturn {
   usersAreLoading: boolean;
 }
 
-export default function useUser(): UseUserReturn {
+export default function useUser(search: string): UseUserReturn {
   const { path, pagination } = usePagination({
-    initialPath: '',
+    search,
   });
 
   const { data, isLoading: usersAreLoading } = useSWRImmutable(path, async () => {

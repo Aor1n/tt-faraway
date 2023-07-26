@@ -3,7 +3,7 @@ import { useMemo, useState } from 'react';
 type Pagination = UsePaginationReturn['pagination'];
 
 export interface UsePaginationProps {
-  initialPath: string;
+  search: string;
 }
 
 export interface UsePaginationReturn {
@@ -14,18 +14,19 @@ export interface UsePaginationReturn {
   };
 }
 
-const PAGINATION = {
+export const PAGINATION = {
   INITIAL_PAGE: 0,
 } as const;
 
-export function usePagination({ initialPath }: UsePaginationProps): UsePaginationReturn {
+export function usePagination({ search }: UsePaginationProps): UsePaginationReturn {
   const [page, setPage] = useState<number>(PAGINATION.INITIAL_PAGE);
 
   const query = new URLSearchParams({
     page: (page + 1).toString(),
+    search,
   });
 
-  const path = `${initialPath}?${query}`;
+  const path = `${query}`;
 
   return useMemo(
     () => ({
