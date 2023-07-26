@@ -29,16 +29,8 @@ module.exports = {
       'warn',
       { allowConstantExport: true },
     ],
-    'no-unused-vars': [
-      'error',
-      {
-        vars: 'all',
-        args: 'after-used',
-        ignoreRestSiblings: true,
-        argsIgnorePattern: '^_',
-      },
-    ],
     'react/react-in-jsx-scope': 'off',
+    'import/no-unresolved': 'off'
   },
 }
 
