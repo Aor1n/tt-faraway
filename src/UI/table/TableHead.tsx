@@ -2,7 +2,7 @@ import { ReactElement } from 'react';
 
 import { TableCell, TableHead as MuiTableHead, TableRow } from '@mui/material';
 
-import { type TableProps } from '../types';
+import { type TableProps } from './types';
 import { COLORS } from '@/colors';
 
 interface TableHeadProps extends Pick<TableProps, 'headers'> {}
