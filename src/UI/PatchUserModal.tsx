@@ -19,11 +19,13 @@ export interface ModalProps {
   isShown: boolean;
   close: () => void;
   user: User & Id;
+  cacheKey: string;
 }
 
-export const PatchUserModal = ({ isShown, close, user }: ModalProps) => {
+export const PatchUserModal = ({ isShown, close, user, cacheKey }: ModalProps) => {
   const { form, handleSubmit } = usePatchUser({
     user,
+    cacheKey,
     onSuccessfulSubmit: () => {}, // todo
   });
 
@@ -64,14 +66,9 @@ export const PatchUserModal = ({ isShown, close, user }: ModalProps) => {
             <Button
               variant={'contained'}
               onClick={async () => {
-                try {
-                  await handleSubmit();
-                  close();
-                } catch (e) {
-                  console.error(e);
-                }
+                await handleSubmit();
+                close();
               }}
-              disabled={false} // todo
             >
               Update
             </Button>

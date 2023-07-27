@@ -17,7 +17,7 @@ export const Users = () => {
   const debouncedSearch = useDebounce<string>(search);
   const { showModal, closeModal } = useModal();
 
-  const { users, usersAreLoading, pagination, previousPage, nextPage, count } = useUser(debouncedSearch);
+  const { users, usersAreLoading, pagination, previousPage, nextPage, count, path } = useUser(debouncedSearch);
 
   const usersTableData = users.map((user) => {
     const id = extractNumberFromString(user.url);
@@ -40,7 +40,7 @@ export const Users = () => {
       action: (
         <Button
           onClick={() => {
-            showModal(<PatchUserModal isShown close={closeModal} user={currentUser} />);
+            showModal(<PatchUserModal isShown close={closeModal} user={currentUser} cacheKey={path} />);
           }}
           variant={'contained'}
         >

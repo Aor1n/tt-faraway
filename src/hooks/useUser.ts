@@ -1,9 +1,8 @@
-import useSWRImmutable from 'swr/immutable';
-
 import { getUsers } from '@/api/user';
 import { usePagination, UsePaginationReturn } from '@/hooks/usePagination';
 import { z } from 'zod';
 import { safeParse } from '@/helpers/safeParse';
+import useSWR from 'swr';
 
 const userSchema = z.object({
   name: z.string(),
@@ -31,7 +30,7 @@ const usersSchema = z.object({
   count: z.number(),
 });
 
-type Users = z.infer<typeof usersSchema>;
+export type Users = z.infer<typeof usersSchema>;
 
 interface UseUserReturn extends UsePaginationReturn {
   users: Users['results'];
@@ -46,13 +45,21 @@ export default function useUser(search: string): UseUserReturn {
     search,
   });
 
-  const { data, isLoading: usersAreLoading } = useSWRImmutable(path, async () => {
-    const response = await getUsers<Users>(path);
+  const { data, isLoading: usersAreLoading } = useSWR(
+    path,
+    async () => {
+      const response = await getUsers<Users>(path);
 
-    safeParse({ schema: usersSchema, data: response });
+      safeParse({ schema: usersSchema, data: response });
 
-    return response;
-  });
+      return response;
+    },
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    },
+  );
 
   return {
     users: data?.results ?? [],

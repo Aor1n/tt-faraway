@@ -1,6 +1,9 @@
 import { useForm, UseFormHandleSubmit, UseFormReturn } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { useSWRConfig } from 'swr';
+import { Users } from '@/hooks/useUser';
+import { extractNumberFromString } from '@/helpers/extractNumberFromString';
 
 const numberSchema = z.union([z.number().gt(0), z.string()]);
 
@@ -11,10 +14,13 @@ const patchUserSchema = z.object({
   mass: numberSchema,
 });
 
+type RawUser = Users['results'][number];
+
 export type User = z.infer<typeof patchUserSchema>;
 
 interface UsePatchUserProps {
   user: User & Id;
+  cacheKey: string;
   onSuccessfulSubmit: () => void;
 }
 
@@ -23,7 +29,7 @@ interface UsePatchUserReturn {
   handleSubmit: ReturnType<UseFormHandleSubmit<User>>;
 }
 
-export default function usePatchUser({ user, onSuccessfulSubmit }: UsePatchUserProps): UsePatchUserReturn {
+export default function usePatchUser({ user, cacheKey, onSuccessfulSubmit }: UsePatchUserProps): UsePatchUserReturn {
   const defaultValues = {
     name: user.name,
     gender: user.gender,
@@ -37,9 +43,36 @@ export default function usePatchUser({ user, onSuccessfulSubmit }: UsePatchUserP
     resolver: zodResolver(patchUserSchema),
   });
 
-  const handleSubmit = async (values: User) => {
+  const { mutate, cache } = useSWRConfig();
+
+  const handleSubmit = async (formValues: User) => {
     try {
-      await console.log({ ...values, id: user.id });
+      const cachedStore = cache.get(cacheKey);
+      const storedResults = cachedStore?.data.results;
+
+      const indexToUpdate = storedResults.findIndex((data: RawUser) => {
+        const cachedId = extractNumberFromString(data.url);
+
+        return cachedId === user.id;
+      });
+
+      if (cachedStore && indexToUpdate !== -1) {
+        storedResults[indexToUpdate] = {
+          ...storedResults[indexToUpdate],
+          ...formValues,
+        };
+      }
+
+      await mutate(
+        cacheKey,
+        {
+          ...structuredClone(cachedStore?.data),
+        },
+        {
+          optimisticData: true,
+          revalidate: false,
+        },
+      );
 
       onSuccessfulSubmit();
     } catch (e) {
