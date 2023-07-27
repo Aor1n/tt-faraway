@@ -1,6 +1,7 @@
 import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import usePatchUser, { User } from '@/hooks/usePatchUser';
 import { TextField } from '@UI/TextField';
+import { notify } from '@/helpers/notify';
 
 const containerStyles = {
   position: 'absolute',
@@ -26,7 +27,7 @@ export const PatchUserModal = ({ isShown, close, user, cacheKey }: ModalProps) =
   const { form, handleSubmit } = usePatchUser({
     user,
     cacheKey,
-    onSuccessfulSubmit: () => {}, // todo
+    onSuccessfulSubmit: () => notify('success', `${user.name} has been updated`),
   });
 
   return (

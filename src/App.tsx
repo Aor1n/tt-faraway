@@ -18,7 +18,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <ModalProvider>
-        <ToastContainer />
+        <ToastContainer progressStyle={{ background: COLORS.PRIMARY }} />
         <Users />
       </ModalProvider>
     </ThemeProvider>
