@@ -10,7 +10,7 @@ import { PAGINATION } from '@/hooks/usePagination';
 import { useModal } from '@/providers/ModalProvider';
 import { PatchUserModal } from '@UI/PatchUserModal';
 
-const HEADERS = ['ID', 'Name', 'Gender', 'Height', 'Mass', 'Created'] as const;
+const HEADERS = ['ID', 'Name', 'Gender', 'Height', 'Mass', 'Created', 'Action'] as const;
 
 export const Users = () => {
   const [search, setSearch] = useState<string>('');
@@ -32,20 +32,21 @@ export const Users = () => {
 
     return {
       id,
-      name: (
-        <Button
-          onClick={() => {
-            showModal(<PatchUserModal isShown close={closeModal} user={currentUser} />);
-          }}
-          variant={'text'}
-        >
-          {user.name}
-        </Button>
-      ),
+      name: user.name,
       gender: user.gender,
       height: user.height,
       mass: user.mass,
       created: formatDate(user.created),
+      action: (
+        <Button
+          onClick={() => {
+            showModal(<PatchUserModal isShown close={closeModal} user={currentUser} />);
+          }}
+          variant={'contained'}
+        >
+          Edit
+        </Button>
+      ),
     };
   });
 
