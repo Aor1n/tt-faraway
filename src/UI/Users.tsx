@@ -10,7 +10,7 @@ import { PAGINATION } from '@/hooks/usePagination';
 import { useModal } from '@/providers/ModalProvider';
 import { PatchUserModal } from '@UI/PatchUserModal';
 
-const HEADERS = ['ID', 'Name', 'Gender', 'Height', 'Birth Year', 'Created'] as const;
+const HEADERS = ['ID', 'Name', 'Gender', 'Height', 'Mass', 'Created'] as const;
 
 export const Users = () => {
   const [search, setSearch] = useState<string>('');
@@ -21,18 +21,21 @@ export const Users = () => {
 
   const usersTableData = users.map((user) => {
     const id = extractNumberFromString(user.url);
+
+    const currentUser = {
+      id,
+      name: user.name,
+      gender: user.gender,
+      height: user.height,
+      mass: user.mass,
+    };
+
     return {
       id,
       name: (
         <Button
           onClick={() => {
-            showModal(
-              <PatchUserModal
-                isShown
-                close={closeModal}
-                primaryBtn={{ text: 'Update', action: async () => await console.log(1), isLoading: false }}
-              />,
-            );
+            showModal(<PatchUserModal isShown close={closeModal} user={currentUser} />);
           }}
           variant={'text'}
         >
@@ -41,7 +44,7 @@ export const Users = () => {
       ),
       gender: user.gender,
       height: user.height,
-      birthYear: user.birth_year,
+      mass: user.mass,
       created: formatDate(user.created),
     };
   });

@@ -1,4 +1,6 @@
-import { Backdrop, Box, Button, Fade, Modal, TextField, Typography } from '@mui/material';
+import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
+import usePatchUser, { User } from '@/hooks/usePatchUser';
+import { TextField } from '@UI/TextField';
 
 const containerStyles = {
   position: 'absolute',
@@ -13,19 +15,18 @@ const containerStyles = {
   p: 4,
 };
 
-interface ModalButton {
-  text: string;
-  action: () => Promise<void>;
-  isLoading: boolean;
-}
-
 export interface ModalProps {
   isShown: boolean;
   close: () => void;
-  primaryBtn: ModalButton;
+  user: User & Id;
 }
 
-export const PatchUserModal = ({ isShown, close, primaryBtn }: ModalProps) => {
+export const PatchUserModal = ({ isShown, close, user }: ModalProps) => {
+  const { form, handleSubmit } = usePatchUser({
+    user,
+    onSuccessfulSubmit: () => {}, // todo
+  });
+
   return (
     <Modal
       aria-labelledby="transition-modal-title"
@@ -45,10 +46,14 @@ export const PatchUserModal = ({ isShown, close, primaryBtn }: ModalProps) => {
       <Fade in={isShown}>
         <Box sx={containerStyles}>
           <Typography id="transition-modal-title" variant="h6" component="h2">
-            {'User #username'}
+            Edit {user.name}
           </Typography>
+
           <Box id="transition-modal-description" sx={{ mt: 2 }}>
-            <TextField fullWidth />
+            <TextField form={form} name={'name'} />
+            <TextField form={form} name={'gender'} />
+            <TextField form={form} name={'height'} />
+            <TextField form={form} name={'mass'} />
           </Box>
 
           <Box display={'flex'} justifyContent={'end'} sx={{ mt: 3 }}>
@@ -60,15 +65,15 @@ export const PatchUserModal = ({ isShown, close, primaryBtn }: ModalProps) => {
               variant={'contained'}
               onClick={async () => {
                 try {
-                  await primaryBtn.action();
+                  await handleSubmit();
                   close();
                 } catch (e) {
                   console.error(e);
                 }
               }}
-              disabled={primaryBtn.isLoading}
+              disabled={false} // todo
             >
-              {primaryBtn.text}
+              Update
             </Button>
           </Box>
         </Box>

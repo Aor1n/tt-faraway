@@ -31,8 +31,6 @@ const usersSchema = z.object({
   count: z.number(),
 });
 
-type User = z.infer<typeof userSchema>;
-
 type Users = z.infer<typeof usersSchema>;
 
 interface UseUserReturn extends UsePaginationReturn {
