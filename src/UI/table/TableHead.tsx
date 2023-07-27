@@ -16,7 +16,7 @@ export const TableHead = ({ headers }: TableHeadProps): ReactElement => {
             key={header}
             align={'center'}
             sx={{
-              color: COLORS.WRITE,
+              color: COLORS.WHITE,
               transition: '0.2s',
               '&:hover': {
                 background: COLORS.PRIMARY,
