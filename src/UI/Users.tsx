@@ -1,4 +1,4 @@
-import { Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import { Search } from '@UI/Search';
 import { Table } from '@UI/table';
 import { ChangeEvent, useState } from 'react';
@@ -7,24 +7,42 @@ import useUser from '@/hooks/useUser';
 import { extractNumberFromString } from '@/helpers/extractNumberFromString';
 import { formatDate } from '@/helpers/formatDate';
 import { PAGINATION } from '@/hooks/usePagination';
+import { useModal } from '@/providers/ModalProvider';
+import { PatchUserModal } from '@UI/PatchUserModal';
 
 const HEADERS = ['ID', 'Name', 'Gender', 'Height', 'Birth Year', 'Created'] as const;
 
 export const Users = () => {
   const [search, setSearch] = useState<string>('');
   const debouncedSearch = useDebounce<string>(search);
+  const { showModal, closeModal } = useModal();
 
   const { users, usersAreLoading, pagination, previousPage, nextPage, count } = useUser(debouncedSearch);
 
-  const usersTableData = users.map(({ name, birth_year, gender, height, url, created }) => {
-    const id = extractNumberFromString(url);
+  const usersTableData = users.map((user) => {
+    const id = extractNumberFromString(user.url);
     return {
       id,
-      name,
-      gender,
-      height,
-      birthYear: birth_year,
-      created: formatDate(created),
+      name: (
+        <Button
+          onClick={() => {
+            showModal(
+              <PatchUserModal
+                isShown
+                close={closeModal}
+                primaryBtn={{ text: 'Update', action: async () => await console.log(1), isLoading: false }}
+              />,
+            );
+          }}
+          variant={'text'}
+        >
+          {user.name}
+        </Button>
+      ),
+      gender: user.gender,
+      height: user.height,
+      birthYear: user.birth_year,
+      created: formatDate(user.created),
     };
   });
 
