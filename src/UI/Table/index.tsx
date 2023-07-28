@@ -2,9 +2,9 @@ import { ReactElement } from 'react';
 
 import { Paper, Table as MuiTable, TableContainer, TablePagination, TableRow } from '@mui/material';
 
-import { TableHead } from '@UI/table/TableHead';
-import { TableBody } from '@UI/table/TableBody';
-import { TableProps } from '@UI/table/types';
+import { TableHead } from '@UI/Table/TableHead';
+import { TableBody } from '@UI/Table/TableBody';
+import { TableProps } from '@UI/Table/types';
 
 export const Table = ({
   data,

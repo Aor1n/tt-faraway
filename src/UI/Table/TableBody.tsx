@@ -1,7 +1,7 @@
 import { type PropsWithChildren } from 'react';
 
 import { Skeleton, TableBody as MuiTableBody, TableCell, TableRow, Typography } from '@mui/material';
-import { TableProps } from '@UI/table/types';
+import { TableProps } from '@UI/Table/types';
 
 type TableBodyProps = Pick<TableProps, 'data' | 'headers' | 'isLoading'>;
 

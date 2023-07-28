@@ -1,6 +1,6 @@
 import { Button, Container } from '@mui/material';
 import { Search } from '@UI/Search';
-import { Table } from '@UI/table';
+import { Table } from '@UI/Table';
 import { ChangeEvent, useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
 import useUser from '@/hooks/useUser';
