@@ -1,7 +1,8 @@
 import { FieldValues, type Path, useController, UseFormReturn } from 'react-hook-form';
 
-import { Box, capitalize, TextField as MuiTextField, type TextFieldProps, Typography } from '@mui/material';
+import { Box, capitalize, TextField as MuiTextField, type TextFieldProps } from '@mui/material';
 import { ReactElement } from 'react';
+import { ErrorField } from '@UI/ErrorField';
 
 type TextInputProps<T extends FieldValues> = {
   form: UseFormReturn<T>;
@@ -30,11 +31,7 @@ export const TextField = <T extends FieldValues>({ name, form, ...restProps }: T
         {...restProps}
       />
 
-      {error && (
-        <Typography color={'error'} variant={'subtitle2'} position={'absolute'} bottom={-20}>
-          {error as string}
-        </Typography>
-      )}
+      {error && <ErrorField message={error as string} />}
     </Box>
   );
 };
