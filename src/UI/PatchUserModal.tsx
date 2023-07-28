@@ -2,6 +2,7 @@ import { Backdrop, Box, Button, Fade, Modal, Typography } from '@mui/material';
 import usePatchUser, { User } from '@/hooks/usePatchUser';
 import { TextField } from '@UI/TextField';
 import { notify } from '@/helpers/notify';
+import { Select } from '@UI/Select';
 
 const containerStyles = {
   position: 'absolute',
@@ -22,6 +23,8 @@ export interface ModalProps {
   user: User & Id;
   cacheKey: string;
 }
+
+const GENDERS = ['male', 'female', 'hermaphrodite', 'none', 'n/a'] as const;
 
 export const PatchUserModal = ({ isShown, close, user, cacheKey }: ModalProps) => {
   const { form, handleSubmit } = usePatchUser({
@@ -54,7 +57,7 @@ export const PatchUserModal = ({ isShown, close, user, cacheKey }: ModalProps) =
 
           <Box id="transition-modal-description" sx={{ mt: 2 }}>
             <TextField form={form} name={'name'} />
-            <TextField form={form} name={'gender'} />
+            <Select data={GENDERS} form={form} name={'gender'} />
             <TextField form={form} name={'height'} />
             <TextField form={form} name={'mass'} />
           </Box>

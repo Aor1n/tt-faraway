@@ -1,14 +1,13 @@
 import { ReactElement } from 'react';
 import { FieldValues, type Path, useController, UseFormReturn } from 'react-hook-form';
 
-import { Box, FormControl, InputLabel, MenuItem, Select as MuiSelect, Skeleton } from '@mui/material';
+import { Box, capitalize, FormControl, InputLabel, MenuItem, Select as MuiSelect, Skeleton } from '@mui/material';
 import { ErrorField } from '@UI/ErrorField';
 
 interface SelectProps<T extends FieldValues> {
   data: ReadonlyArray<string>;
   form: UseFormReturn<T>;
   name: Path<T>;
-  label: string;
   onChange?: (value: string) => void;
   isLoading?: boolean;
 }
@@ -17,10 +16,11 @@ export const Select = <T extends FieldValues>({
   form,
   name,
   data,
-  label,
   isLoading = false,
   onChange,
 }: SelectProps<T>): ReactElement => {
+  const label = capitalize(name);
+
   const { field } = useController({
     name,
     control: form.control,
@@ -28,7 +28,7 @@ export const Select = <T extends FieldValues>({
 
   const error = form.formState.errors[name];
   return (
-    <FormControl fullWidth>
+    <FormControl fullWidth sx={{ mb: 3 }}>
       {isLoading ? (
         <Skeleton variant="rectangular" width={'100%'} height={56} animation="wave" />
       ) : (
