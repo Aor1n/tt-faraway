@@ -1,7 +1,7 @@
 import { Button, Container } from '@mui/material';
 import { Search } from '@UI/Search';
 import { Table } from '@UI/Table';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { useDebounce } from '@/hooks/useDebounce';
 import useUser from '@/hooks/useUser';
 import { extractNumberFromString } from '@/helpers/extractNumberFromString';
@@ -50,9 +50,7 @@ export const Users = () => {
     };
   });
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
-
+  const setInitialPaginationPage = () => {
     // NOTE: smelly code that is resetting the page(state) due to an API bug
     // that doesn't allow us to search if current page isn't initial.
     pagination.setPage(PAGINATION.INITIAL_PAGE);
@@ -60,7 +58,12 @@ export const Users = () => {
 
   return (
     <Container>
-      <Search value={search} onChange={onChange} label={`Search by character's name`} />
+      <Search
+        value={search}
+        setSearch={setSearch}
+        setInitialPaginationPage={setInitialPaginationPage}
+        label={`Search by character's name`}
+      />
 
       <Table
         headers={HEADERS}
