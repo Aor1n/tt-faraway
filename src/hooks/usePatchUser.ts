@@ -37,7 +37,7 @@ export default function usePatchUser({ user, cacheKey, onSuccessfulSubmit }: Use
     mass: user.mass,
   };
 
-  const form = useForm({
+  const form = useForm<User>({
     defaultValues,
     mode: 'onChange',
     resolver: zodResolver(patchUserSchema),

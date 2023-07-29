@@ -30,7 +30,10 @@ export const PatchUserModal = ({ isShown, close, user, cacheKey }: ModalProps) =
   const { form, handleSubmit } = usePatchUser({
     user,
     cacheKey,
-    onSuccessfulSubmit: () => notify('success', `${user.name} has been updated`),
+    onSuccessfulSubmit: () => {
+      notify('success', `${user.name} has been updated`);
+      close();
+    },
   });
 
   return (
@@ -67,13 +70,7 @@ export const PatchUserModal = ({ isShown, close, user, cacheKey }: ModalProps) =
               Cancel
             </Button>
 
-            <Button
-              variant={'contained'}
-              onClick={async () => {
-                await handleSubmit();
-                close();
-              }}
-            >
+            <Button variant={'contained'} onClick={handleSubmit}>
               Update
             </Button>
           </Box>
