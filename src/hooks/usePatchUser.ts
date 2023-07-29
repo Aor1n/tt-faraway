@@ -5,13 +5,13 @@ import { useSWRConfig } from 'swr';
 import { Users } from '@/hooks/useUser';
 import { extractNumberFromString } from '@/helpers/extractNumberFromString';
 
-const numberSchema = z.union([z.number().gt(0), z.string()]);
+const numberSchema = z.number().int().positive('Value must be positive').finite();
 
 const patchUserSchema = z.object({
   name: z.string().min(2, 'Name is too short').trim(),
-  gender: z.string().trim(),
-  height: numberSchema,
-  mass: numberSchema,
+  gender: z.string(),
+  height: z.union([numberSchema, z.string()]),
+  mass: z.union([numberSchema, z.string()]),
 });
 
 type RawUser = Users['results'][number];

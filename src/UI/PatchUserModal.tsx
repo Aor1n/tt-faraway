@@ -58,8 +58,8 @@ export const PatchUserModal = ({ isShown, close, user, cacheKey }: ModalProps) =
           <Box id="transition-modal-description" sx={{ mt: 2 }}>
             <TextField form={form} name={'name'} />
             <Select data={GENDERS} form={form} name={'gender'} />
-            <TextField form={form} name={'height'} />
-            <TextField form={form} name={'mass'} />
+            <TextField form={form} name={'height'} type={'number'} />
+            <TextField form={form} name={'mass'} type={'number'} />
           </Box>
 
           <Box display={'flex'} justifyContent={'end'} sx={{ mt: 3 }}>
