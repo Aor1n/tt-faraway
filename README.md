@@ -2,6 +2,7 @@
 - React
 - TypeScript
 - Vite
+- Vitest (tests)
 - ky (fetch)
 - SWR (cache)
 - MUI (UI)
@@ -17,5 +18,10 @@ yarn
 Start dev server by:
 ```bash
 yarn dev
+```
+
+Run tests by:
+```bash
+yarn test
 ```
 
