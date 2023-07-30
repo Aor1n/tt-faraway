@@ -3,14 +3,11 @@ import { ChangeEvent } from 'react';
 
 type SearchProps = TextFieldProps & {
   setSearch: (search: string) => void;
-  setInitialPaginationPage: () => void;
 };
 
-export const Search = ({ setSearch, setInitialPaginationPage, ...props }: SearchProps) => {
+export const Search = ({ setSearch, ...props }: SearchProps) => {
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-
-    setInitialPaginationPage();
   };
 
   const resetSearchState = () => setSearch('');

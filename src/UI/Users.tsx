@@ -14,7 +14,7 @@ const HEADERS = ['ID', 'Name', 'Gender', 'Height', 'Mass', 'Created', 'Action'] 
 
 export const Users = () => {
   const [search, setSearch] = useState<string>('');
-  const debouncedSearch = useDebounce<string>(search);
+  const debouncedSearch = useDebounce<string>(search, setInitialPaginationPage);
   const { showModal, closeModal } = useModal();
 
   const { users, usersAreLoading, pagination, previousPage, nextPage, count, path } = useUser(debouncedSearch);
@@ -50,20 +50,15 @@ export const Users = () => {
     };
   });
 
-  const setInitialPaginationPage = () => {
+  function setInitialPaginationPage() {
     // NOTE: smelly code that is resetting the page(state) due to an API bug
     // that doesn't allow us to search if current page isn't initial.
     pagination.setPage(PAGINATION.INITIAL_PAGE);
-  };
+  }
 
   return (
     <Container>
-      <Search
-        value={search}
-        setSearch={setSearch}
-        setInitialPaginationPage={setInitialPaginationPage}
-        label={`Search by character's name`}
-      />
+      <Search value={search} setSearch={setSearch} label={`Search by character's name`} />
 
       <Table
         headers={HEADERS}
