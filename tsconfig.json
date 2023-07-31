@@ -11,6 +11,7 @@
       "@UI/*": ["src/UI/*"],
       "@assets/*": ["src/assets/*"]
     },
+    "types": ["vitest/globals"],
 
     /* Bundler mode */
     "moduleResolution": "bundler",
